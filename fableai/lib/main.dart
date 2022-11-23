@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FableAI',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -24,22 +24,18 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'FableAI'),
+      home: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.green,
+            centerTitle: true,
+            title: const Text('FableAI2'),
+          ),
+          // Calls the MyTextInput
+          body: MyTextInput()),
     );
   }
 }
 
-
-class TestWdiget extends StatelessWidget {
-  const TestWdiget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
-}
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -56,6 +52,38 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class MyTextInput extends StatefulWidget {
+  const MyTextInput({super.key});
+
+  @override
+  MyTextInputState createState() => MyTextInputState();
+}
+
+class MyTextInputState extends State<MyTextInput> {
+  String result = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+          TextField(
+              decoration: InputDecoration(hintText: "Enter your story here"),
+              //onChanged is called whenever we add or delete something on Text Field
+
+              onSubmitted: (String str) {
+                setState(() {
+                  result = str;
+                });
+              }),
+          //displaying input text
+          Text(result)
+        ])));
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
