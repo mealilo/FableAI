@@ -1,7 +1,8 @@
 import 'package:fableai/api_service.dart';
-import 'package:fableai/user_model.dart';
+import 'package:fableai/aiResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+// file deprecated
+//import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -98,7 +99,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late List<UserModel>? _userModel = [];
+  var aiResponse;
+
   @override
   void initState() {
     super.initState();
@@ -106,7 +108,7 @@ class _HomeState extends State<Home> {
   }
 
   void _getData() async {
-    _userModel = (await ApiService().getUsers())!;
+    var aiResponse = (await ApiService().getaiResponse())!;
     Future.delayed(const Duration(seconds: 1)).then((value) => setState(() {}));
   }
 
@@ -116,12 +118,12 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: const Text('REST API Example'),
       ),
-      body: _userModel == null || _userModel!.isEmpty
+      body: aiResponse == null || aiResponse!.isEmpty
           ? const Center(
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
-              itemCount: _userModel!.length,
+              itemCount: aiResponse!.length,
               itemBuilder: (context, index) {
                 return Card(
                   child: Column(
@@ -129,8 +131,8 @@ class _HomeState extends State<Home> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(_userModel![index].id.toString()),
-                          Text(_userModel![index].username),
+                          Text(aiResponse![index].id.toString()),
+                          Text(aiResponse![index].username),
                         ],
                       ),
                       const SizedBox(
@@ -139,8 +141,8 @@ class _HomeState extends State<Home> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(_userModel![index].email),
-                          Text(_userModel![index].website),
+                          Text(aiResponse![index].email),
+                          Text(aiResponse![index].website),
                         ],
                       ),
                     ],
