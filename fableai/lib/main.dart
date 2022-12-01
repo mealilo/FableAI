@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Text input widget (this calls my textinput state)
+// Text input widget (this calls my text input state)
 class MyTextInput extends StatefulWidget {
   const MyTextInput({super.key});
   @override
@@ -58,7 +58,15 @@ class MyTextInputState extends State<MyTextInput> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
           TextField(
-              decoration: InputDecoration(hintText: "Enter your story here"),
+              decoration: InputDecoration(
+                  hintText: "Enter your story here",
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+
+                    },
+                ),
+              ),
               //onChanged is called whenever we add or delete something on Text Field
 
               onSubmitted: (String str) {
@@ -80,48 +88,78 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late List<CompletionsResponse>? response = [];
+  final myController = TextEditingController();
+  late CompletionsResponse? response = null;
   @override
   void initState() {
     super.initState();
-    _getData();
   }
 
-  void _getData() async {
-    response = (await CompletionsApi.getStory()) as List<CompletionsResponse>?;
+  void _getData(str) async {
+    response = (await CompletionsApi.getStory(str));
     Future.delayed(const Duration(seconds: 2)).then((value) => setState(() {}));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter API Call'),
-      ),
-      body: response == null || response!.isEmpty
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              itemCount: response!.length,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(response![index].id.toString()),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+
+      body: Column(
+        children: [
+          response == null
+              ? const Center(
+              child: CircularProgressIndicator()
+          ) : SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Text(response!.choices![0]["text"].toString())
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Text(
+              'Input Your Story Below:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          TextField(
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              minLines: 4,
+              controller: myController,
+              decoration: InputDecoration(
+                hintText: "Enter your story here",
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () {
+                    _getData(myController.text);
+                  },
+                ),
+              ),
+              onSubmitted: (String str) {
+                _getData(str);
+              }
+          )
+        ]
+      // )ListView.builder(
+      //         itemCount: 0,
+      //         itemBuilder: (context, index) {
+      //           return Card(
+      //             child: Column(
+      //               children: [
+      //                 Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      //                   children: [
+      //                     Text(response?.choices[0].toString()),
+      //                   ],
+      //                 ),
+      //                 const SizedBox(
+      //                   height: 20.0,
+      //                 ),
+      //               ],
+      //             ),
+      //           );
+      //         },
+      //       ),
+    )
     );
   }
 }

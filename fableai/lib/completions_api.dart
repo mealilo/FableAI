@@ -18,14 +18,14 @@ class CompletionsApi {
   };
 
   /// creates a request object, and then fills it in with the prompt, and then sends to request object.
-  static Future<CompletionsResponse> getStory() async {
+  static Future<CompletionsResponse> getStory(prompt) async {
     debugPrint('Sending Request to OpenAI');
 
     // Generate request object
     CompletionsRequest request = CompletionsRequest(
-      model: 'text-babbage-001',
-      prompt: "Tell me a story about George Washington",
-      maxTokens: 9,
+      model: 'text-davinci-003',
+      prompt: "Complete this story in 2 paragraphs: $prompt",
+      maxTokens: 322,
       temperature: .5,
     );
 
