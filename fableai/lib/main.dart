@@ -59,12 +59,10 @@ class MyTextInputState extends State<MyTextInput> {
                 children: <Widget>[
           TextField(
               decoration: InputDecoration(
-                  hintText: "Enter your story here",
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.send),
-                    onPressed: () {
-
-                    },
+                hintText: "Enter your story here",
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: () {},
                 ),
               ),
               //onChanged is called whenever we add or delete something on Text Field
@@ -103,63 +101,57 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: Column(
-        children: [
-          response == null
-              ? const Center(
-              child: CircularProgressIndicator()
-          ) : SingleChildScrollView(
+        body: Column(children: [
+      response == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Text(response!.choices![0]["text"].toString())
+              child: Text(response!.choices![0]["text"].toString())),
+      const SizedBox(
+        height: 10,
+      ),
+      Text(
+        'Input Your Story Below:',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      TextField(
+          keyboardType: TextInputType.multiline,
+          maxLines: null,
+          minLines: 4,
+          controller: myController,
+          decoration: InputDecoration(
+            hintText: "Enter your story here",
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.send),
+              onPressed: () {
+                _getData(myController.text);
+              },
+            ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-              'Input Your Story Below:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              minLines: 4,
-              controller: myController,
-              decoration: InputDecoration(
-                hintText: "Enter your story here",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    _getData(myController.text);
-                  },
-                ),
-              ),
-              onSubmitted: (String str) {
-                _getData(str);
-              }
-          )
-        ]
-      // )ListView.builder(
-      //         itemCount: 0,
-      //         itemBuilder: (context, index) {
-      //           return Card(
-      //             child: Column(
-      //               children: [
-      //                 Row(
-      //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      //                   children: [
-      //                     Text(response?.choices[0].toString()),
-      //                   ],
-      //                 ),
-      //                 const SizedBox(
-      //                   height: 20.0,
-      //                 ),
-      //               ],
-      //             ),
-      //           );
-      //         },
-      //       ),
-    )
-    );
+          onSubmitted: (String str) {
+            _getData(str);
+          })
+    ]
+            // )ListView.builder(
+            //         itemCount: 0,
+            //         itemBuilder: (context, index) {
+            //           return Card(
+            //             child: Column(
+            //               children: [
+            //                 Row(
+            //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //                   children: [
+            //                     Text(response?.choices[0].toString()),
+            //                   ],
+            //                 ),
+            //                 const SizedBox(
+            //                   height: 20.0,
+            //                 ),
+            //               ],
+            //             ),
+            //           );
+            //         },
+            //       ),
+            ));
   }
 }
