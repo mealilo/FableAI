@@ -40,44 +40,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Text input widget (this calls my text input state)
-class MyTextInput extends StatefulWidget {
-  const MyTextInput({super.key});
-  @override
-  MyTextInputState createState() => MyTextInputState();
-}
-
-class MyTextInputState extends State<MyTextInput> {
-  String result = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        body: Center(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-          TextField(
-              decoration: InputDecoration(
-                hintText: "Enter your story here",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {},
-                ),
-              ),
-              //onChanged is called whenever we add or delete something on Text Field
-
-              onSubmitted: (String str) {
-                setState(() {
-                  result = str;
-                });
-              }),
-          //displaying input text
-          Text(result)
-        ])));
-  }
-}
-
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
