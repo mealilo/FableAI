@@ -1,5 +1,5 @@
+import 'package:fableai/env/env.dart';
 import 'package:flutter/material.dart';
-import 'api_key.dart';
 import 'completions_request.dart';
 import 'package:http/http.dart' as http;
 import 'completions_response.dart';
@@ -14,7 +14,7 @@ class CompletionsApi {
   // all requests
   static final Map<String, String> headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer $openAIApiKey',
+    'Authorization': 'Bearer ${Env.openAIApiKey}',
   };
 
   /// creates a request object, and then fills it in with the prompt, and then sends to request object.
