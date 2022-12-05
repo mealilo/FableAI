@@ -47,6 +47,13 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+const List<String> gpt3Models = <String>[
+  "text-davinci-003",
+  "text-curie-001",
+  "text-babbage-001",
+  "text-ada-001"
+];
+
 class _HomeState extends State<Home> {
   final myController = TextEditingController();
   late CompletionsResponse? response = null;
@@ -55,10 +62,12 @@ class _HomeState extends State<Home> {
     super.initState();
   }
 
-  void _getData(str) async {
-    response = (await CompletionsApi.getStory(str));
+  void _getData(str, model) async {
+    response = (await CompletionsApi.getStory(str, model));
     Future.delayed(const Duration(seconds: 2)).then((value) => setState(() {}));
   }
+
+  String dropdownValue = gpt3Models.first;
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +81,29 @@ class _HomeState extends State<Home> {
       const SizedBox(
         height: 10,
       ),
-      Text(
+      DropdownButton<String>(
+        value: dropdownValue,
+        icon: const Icon(Icons.arrow_downward),
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String? value) {
+          // This is called when the user selects an item.
+          setState(() {
+            dropdownValue = value!;
+          });
+        },
+        items: gpt3Models.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+      const Text(
         'Input Your Story Below:',
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
@@ -86,34 +117,13 @@ class _HomeState extends State<Home> {
             suffixIcon: IconButton(
               icon: const Icon(Icons.send),
               onPressed: () {
-                _getData(myController.text);
+                _getData(myController.text, dropdownValue);
               },
             ),
           ),
           onSubmitted: (String str) {
-            _getData(str);
+            _getData(str, dropdownValue);
           })
-    ]
-            // )ListView.builder(
-            //         itemCount: 0,
-            //         itemBuilder: (context, index) {
-            //           return Card(
-            //             child: Column(
-            //               children: [
-            //                 Row(
-            //                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //                   children: [
-            //                     Text(response?.choices[0].toString()),
-            //                   ],
-            //                 ),
-            //                 const SizedBox(
-            //                   height: 20.0,
-            //                 ),
-            //               ],
-            //             ),
-            //           );
-            //         },
-            //       ),
-            ));
+    ]));
   }
 }
