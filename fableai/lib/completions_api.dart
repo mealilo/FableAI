@@ -14,7 +14,7 @@ class CompletionsApi {
   // all requests
   static final Map<String, String> headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer ${Env.openAIApiKey}',
+    'Authorization': 'Bearer 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',
   };
 
   /// creates a request object, and then fills it in with the prompt, and then sends to request object.
