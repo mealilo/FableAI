@@ -125,6 +125,7 @@ class _HomeState extends State<Home> {
                 icon: const Icon(Icons.send),
                 onPressed: () {
                   submissionText = myController.text;
+                  response = null;
                   _getData(submissionText, dropdownValue);
                 },
               ),
