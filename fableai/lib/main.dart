@@ -113,22 +113,20 @@ class _HomeState extends State<Home> {
               vertical: 16.0,
               horizontal: ((MediaQuery.of(context).size.width) * 0.1)),
           child: TextField(
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              minLines: 1,
-              controller: myController,
-              decoration: InputDecoration(
-                hintText: "Enter your story here",
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.send),
-                  onPressed: () {
-                    _getData(myController.text, dropdownValue);
-                  },
-                ),
+            keyboardType: TextInputType.multiline,
+            maxLines: 4,
+            minLines: 1,
+            controller: myController,
+            decoration: InputDecoration(
+              hintText: "Enter your story here",
+              suffixIcon: IconButton(
+                icon: const Icon(Icons.send),
+                onPressed: () {
+                  _getData(myController.text, dropdownValue);
+                },
               ),
-              onSubmitted: (String str) {
-                _getData(str, dropdownValue);
-              }),
+            ),
+          ),
         ),
         response == null
             ? const Center(child: CircularProgressIndicator())
@@ -138,7 +136,10 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.symmetric(
                       vertical: 16.0,
                       horizontal: ((MediaQuery.of(context).size.width) * 0.1)),
-                  child: Text(response!.choices![0]["text"].toString()),
+                  child: Text(
+                    response!.choices![0]["text"].toString(),
+                    style: TextStyle(fontSize: 16),
+                  ),
                 )),
       ]),
     ));
