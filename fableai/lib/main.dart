@@ -59,11 +59,13 @@ class _HomeState extends State<Home> {
   }
 
   void _getData(str, model) async {
+    setState(() {});
     response = (await CompletionsApi.getStory(str, model));
     Future.delayed(const Duration(seconds: 2)).then((value) => setState(() {}));
   }
 
   String dropdownValue = gpt3Models.first;
+  String? submissionText;
 
   @override
   Widget build(BuildContext context) {
@@ -122,25 +124,31 @@ class _HomeState extends State<Home> {
               suffixIcon: IconButton(
                 icon: const Icon(Icons.send),
                 onPressed: () {
-                  _getData(myController.text, dropdownValue);
+                  submissionText = myController.text;
+                  _getData(submissionText, dropdownValue);
                 },
               ),
             ),
           ),
         ),
-        response == null
-            ? const Center(child: CircularProgressIndicator())
-            : SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 16.0,
-                      horizontal: ((MediaQuery.of(context).size.width) * 0.1)),
-                  child: Text(
-                    response!.choices![0]["text"].toString(),
-                    style: TextStyle(fontSize: 16),
-                  ),
-                )),
+        submissionText == null
+            ? const SizedBox(
+                height: 0,
+              )
+            : response == null
+                ? const Center(child: CircularProgressIndicator())
+                : SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 0,
+                          horizontal:
+                              ((MediaQuery.of(context).size.width) * 0.1)),
+                      child: Text(
+                        response!.choices![0]["text"].toString(),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    )),
       ]),
     ));
   }
@@ -180,19 +188,3 @@ class BackgroundPainter extends CustomPainter {
     return oldDelegate != this;
   }
 }
-
-
-              // FutureBuilder<String?>(
-              //   future: getData(myController.text),
-              //   builder: (context, snapshot) {
-              //     if (snapshot.hasError) {
-              //       final error = snapshot.error;
-              //       return Text('$error');
-              //     } else if (snapshot.hasData) {
-              //       String data = snapshot.data!;
-              //       return Text(data);
-              //     } else {
-              //       return const CircularProgressIndicator();
-              //     }
-              //   }, //Testing
-
